@@ -1,0 +1,31 @@
+load("@emsdk//emscripten_toolchain:wasm_rules.bzl", "wasm_cc_binary")
+
+cc_library(
+    name = "capnp_inner",
+    srcs = ["capnp_inner.c++"],
+    hdrs = ["capnp_inner.h"],
+    deps = [
+        "//src/capnp:capnp",
+        "//src/capnp:capnpc",
+        "//src/capnp:capnpc_module_loader",
+    ],
+)
+
+cc_binary(
+    name = "capnp_outer",
+    srcs = ["capnp_outer.c++"],
+    linkopts = [
+        "--bind",
+        "-s ENVIRONMENT=web",
+        "-s MODULARIZE=1",
+    ],
+    deps = [":capnp_inner"],
+    # This target won't build successfully on its own because of missing emscripten
+    # headers etc. Therefore, we hide it from wildcards.
+    tags = ["manual"],
+)
+
+wasm_cc_binary(
+    name = "capnp_wasm",
+    cc_target = ":capnp_outer",
+)

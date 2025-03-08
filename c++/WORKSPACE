@@ -52,3 +52,19 @@ http_archive(
 )
 
 load_brotli()
+
+http_archive(
+    name = "emsdk",
+    sha256 = "d5e9af17d3da29c2f6000118e4634bcc406a8b45a3023f1d7650c78626b276ca",
+    strip_prefix = "emsdk-074211759c17c646164d3271ca1d155cc174f78e/bazel",
+    url = "https://github.com/emscripten-core/emsdk/archive/074211759c17c646164d3271ca1d155cc174f78e.tar.gz",
+)
+
+load("@emsdk//:deps.bzl", "deps")
+deps()
+
+load("@emsdk//:emscripten_deps.bzl", "emscripten_deps")
+emscripten_deps()
+
+load("@emsdk//:toolchains.bzl", "register_emscripten_toolchains")
+register_emscripten_toolchains()
