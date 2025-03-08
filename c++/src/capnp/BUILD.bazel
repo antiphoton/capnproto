@@ -127,6 +127,21 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "capnpc_module_loader",
+    srcs = [
+        "compiler/module-loader.c++",
+    ],
+    hdrs = [
+        "compiler/module-loader.h",
+    ],
+    include_prefix = "capnp",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":capnp",
+        ":capnpc",
+    ],
+)
 cc_binary(
     name = "capnp_tool",
     srcs = [

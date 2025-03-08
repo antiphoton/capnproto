@@ -931,6 +931,9 @@ void Mutex::unlock(Exclusivity exclusivity, Waiter* waiterToSkip) {
 }
 
 void Mutex::assertLockedByCaller(Exclusivity exclusivity) const {
+  #ifdef __EMSCRIPTEN__ 
+  return ;
+  #endif
   switch (exclusivity) {
     case EXCLUSIVE:
       // A read lock should fail if the mutex is already held for writing.

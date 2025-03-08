@@ -1243,6 +1243,9 @@ using abi::__cxa_get_globals;
 #endif
 
 uint uncaughtExceptionCount() {
+  #ifdef __EMSCRIPTEN__
+  return 0;
+  #endif
   return reinterpret_cast<FakeEhGlobals*>(__cxa_get_globals())->uncaughtExceptions;
 }
 
